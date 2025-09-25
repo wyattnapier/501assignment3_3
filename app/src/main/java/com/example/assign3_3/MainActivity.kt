@@ -1,7 +1,6 @@
 package com.example.assign3_3
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,28 +19,21 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -133,7 +125,7 @@ fun AnimalListScreen(modifier: Modifier) {
                     SmallFloatingActionButton(
                         onClick = {
                             coroutineScope.launch {
-                                listState.scrollToItem(0)
+                                listState.animateScrollToItem(0)
                             }
                         },
                     ) {
@@ -178,7 +170,7 @@ fun AnimalListHeader(text: String) {
 }
 
 @Composable
-fun AnimalListItem(text: String, modifier: Modifier = Modifier) {
+fun AnimalListItem(text: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
