@@ -1,6 +1,7 @@
 package com.example.assign3_3
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,15 +12,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -92,12 +100,11 @@ class MainActivity : ComponentActivity() {
 fun AnimalListScreen(modifier: Modifier) {
     val listState: LazyListState = rememberLazyListState() // hold info about lazyColumn scroll pos
     val coroutineScope = rememberCoroutineScope() // used to scrollToItem
-    var scrolledPastItem10 by remember { mutableStateOf(false) } // boolean if scrolled past 10th item
-
-    // set scrolledPastItem10 boolean based on list state
-    LaunchedEffect(remember { derivedStateOf { listState.firstVisibleItemIndex } }) {
-        scrolledPastItem10 = listState.firstVisibleItemIndex > 10
-    }
+    val showButton: Boolean by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 10
+        }
+    } // boolean that is true if scrolled past 10th item
 
     Column(modifier = modifier.fillMaxWidth()) {
 
@@ -119,26 +126,29 @@ fun AnimalListScreen(modifier: Modifier) {
                 )
             }
             Box(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f).height(40.dp),
+                contentAlignment = Alignment.CenterEnd
             ) {
-            if (scrolledPastItem10) {
-                Button(
-                    onClick = {
-                        coroutineScope.launch {
-                            listState.scrollToItem(0)
-                        }
-                    },
-                    modifier = Modifier.padding(start = 20.dp)
-                ) {
-                    Text(text = "Jump to top!")
+                if (showButton) {
+                    SmallFloatingActionButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                listState.scrollToItem(0)
+                            }
+                        },
+                    ) {
+                        Icon(Icons.Filled.KeyboardArrowUp, "Jump to top!")
+                    }
                 }
-            }
             }
         }
 
         HorizontalDivider()
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            state = listState
+        ) {
             // loop through all of the data by type
             animalsByType.forEach { animalType ->
                 stickyHeader(key = animalType.name) {
