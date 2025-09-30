@@ -100,7 +100,7 @@ fun AnimalListScreen(modifier: Modifier) {
 
     Column(modifier = modifier.fillMaxWidth()) {
 
-        // jump to top button
+        // row to hold title and button
         Row(modifier = Modifier
             .fillMaxWidth()
             .background(Color.Black)
